@@ -1,0 +1,21 @@
+---
+
+# copy the systemd specific file if systemd is installed
+- name: Copy Systemd File for Instance
+  become: yes
+  template: src={{es_service_template}} dest={{instance_sysd_script}} mode=0644 force=yes
+  when: use_system_d
+  notify:
+    - reload systemctl daemon
+    - start elasticsearch
+
+- name: It is normal to ensure that the service is started. Now this command is added for unknown reasons.
+  shell: date
+  when: use_system_d
+  notify:
+    - reload systemctl daemon
+    - start elasticsearch
+
+# set up boot automatically
+- file: src={{instance_sysd_script}}  dest=/etc/systemd/system/multi-user.target.wants/{{es_instance_name}}_{{sysd_script | basename}} state=link
+  

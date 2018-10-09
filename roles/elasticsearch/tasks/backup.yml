@@ -1,0 +1,21 @@
+---
+- name: set fact config_backup_dir
+  set_fact: config_backup_dir={{es_config_backup}}/{{es_user}}/{{es_instance_name}}
+- name: create config backup directory
+  file: dest={{ config_backup_dir }} state=directory owner={{es_user}} group={{es_group}}
+- shell: ls -l {{ config_backup_dir }} |grep "^d"|wc -l
+  failed_when: 0
+  ignore_errors: True
+  register: file_count
+- shell: ls -l {{ config_backup_dir }} |grep "^d"|sort |head -n 1|awk '{print $9}'
+  register: del_file
+  when: file_count.stdout > 0
+- shell: rm -rf {{ config_backup_dir }}/{{del_file.stdout}}
+  ignore_errors: True
+  when: (file_count.stdout > '4') and (del_file.stdout != '')
+- shell: date "+%Y%m%d%H%M%S"
+  ignore_errors: True
+  register: file_name
+- file: path={{ config_backup_dir }}/{{file_name.stdout}} state=directory owner={{es_user}} group={{es_group}}
+- shell: cp -r {{ es_conf_dir }}/{{es_instance_name}}/* {{ config_backup_dir }}/{{file_name.stdout}}
+  ignore_errors: True

@@ -1,0 +1,25 @@
+---
+# Elasticsearch Ansible Tarball
+
+- name: create decompress directory
+  file: dest={{ decompress_path }} state=directory owner={{ es_user }} group={{ es_group }}
+  
+- name: upload decompress package
+  unarchive: src={{ package_path }} dest={{ decompress_path }} owner={{es_user}} group={{ es_group }}
+
+- group: name={{ es_group }} system=yes
+- user: name={{ es_user }} group={{ es_group }} system=yes
+
+- name: Change ownership on elasticsearch directory.
+  file: path={{ es_home }} state=directory owner={{ es_user }} group={{ es_group}}
+  tags: bootstrap
+
+- name: Create elasticsearch {{ item }} directory.
+  file: path={{ item }} state=directory owner={{ es_user }} group={{ es_group }}
+  tags: bootstrap
+  with_items:
+    - "{{es_data_dir}}"
+    - "{{es_log_dir}}"
+
+- name: Authorization file executable permissions
+  shell: chmod a+x {{es_home}}/bin/elasticsearch

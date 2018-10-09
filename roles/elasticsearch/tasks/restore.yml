@@ -1,0 +1,25 @@
+---
+- name: set fact config_backup_dir
+  set_fact: config_backup_dir={{ es_config_backup }}/{{ es_user }}/{{ es_instance_name }}
+- shell: ls -l {{ config_backup_dir }} |grep "^d"|wc -l
+  failed_when: 0
+  ignore_errors: True
+  register: file_count
+
+- name: set es history version
+  set_fact: es_history_version={{ file_count.stdout }}
+
+- name: faild when has no elasticsearch version can restore
+  fail: msg="ERROR - elasticsearch has not version can be restore"
+  when: es_history_version == '0' or es_history_version < es_restore_version
+
+# check dest address is exists or can write
+
+- name: search elasticsearch replace version
+  shell: ls -l {{ config_backup_dir }} |grep "^d" |sort -r |sed -n '{{ es_restore_version }}p' |awk '{print $9}'
+  register: replace_file
+
+- name: restore elasticsearch config file
+  shell: cp -r {{ config_backup_dir }}/{{replace_file.stdout}}/* {{ es_conf_dir }}/{{es_instance_name}}
+
+

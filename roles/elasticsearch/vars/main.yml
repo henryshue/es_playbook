@@ -1,0 +1,18 @@
+---
+array_to_str: "" 
+default_file: "/home/sms/elasticsearch-5.6.1/config"
+es_conf_dir: "/home/sms/elasticsearch-5.6.1/config"
+sysd_script: "/usr/lib/systemd/system/elasticsearch.service"
+init_script: "/etc/systemd/system/elasticsearch"
+
+package_path: ../../../package/elasticsearch-5.6.1.tar.gz
+decompress_path: /home/sms
+
+# Setup ElasticSearch Variables
+es_user: sms
+es_group: sms
+
+es_home: '{{decompress_path}}/elasticsearch-{{es_version}}'
+es_link_file: /home/sms/elasticsearch
+es_data_dir: /data/0/sms/elasticsearch
+es_log_dir: /data/logs/sms/elasticsearch

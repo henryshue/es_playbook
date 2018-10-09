@@ -1,0 +1,22 @@
+---
+# All tasks of install elasticsearch
+- include_tasks: parameters.yml
+  tags: deploy
+      
+- include_tasks: tarball.yml
+  tags: install
+
+- include_tasks: config.yml
+  tags: install
+
+- name: set fact instance_sysd_script
+  set_fact: es_operate={{ opt }}
+
+- include_tasks: restore.yml
+  when: es_operate == 'restore'
+
+- include_tasks: systemd.yml
+  tags: deploy
+
+- include_tasks: backup.yml
+  when: es_operate is not defined or es_operate =="backup"

@@ -1,0 +1,8 @@
+---
+#The simplest configuration therefore consists of:
+
+- name: Simple Example
+  hosts: allhosts
+  roles:
+    - role: elasticsearch
+      es_instance_name: "node1"

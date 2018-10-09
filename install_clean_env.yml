@@ -1,0 +1,9 @@
+#!/usr/bin/ansible-playbook
+---
+- name: clean environment
+  hosts: all_node_root
+  remote_user: root
+  gather_facts: no
+  tasks:
+    - name: execute clean
+      script: ./scripts/install_clean_env.sh

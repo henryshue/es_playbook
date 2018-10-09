@@ -1,0 +1,8 @@
+---
+# default file for jdk
+jdk_operation: "showversion"
+jdk_installpath: "/usr/jdk"
+jdk_uninstallpath: "/usr/jdk"
+jdk_pkgpath: "jdk-8u121-linux-x64.tar.gz"
+
+java_home: "/usr/jdk/jdk1.8.0_121"

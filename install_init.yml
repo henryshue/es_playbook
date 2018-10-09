@@ -1,0 +1,38 @@
+#!/usr/bin/ansible-playbook
+---
+
+- name: initialize environment
+  hosts: all_node_root
+  remote_user: root
+  gather_facts: no
+  tasks:
+    - name: 1、close and disable firewall
+      shell: systemctl stop firewalld && systemctl disable firewalld
+
+    - name: 2、disable selinux
+      selinux: state=disabled
+    - shell: getenforce
+      register: force_status
+    - debug: msg="Enforce status is not disabled, it may be restarted before it takes effect"
+      when: force_status.stdout != "Disabled"
+
+    - name: 3、modify timezone
+      timezone: name="Asia/Shanghai"
+
+
+- name: generate user
+  hosts: all_node_root
+  remote_user: root
+  gather_facts: no
+  tasks:
+    - name: generate user sms
+      import_role: name=user
+
+- name: ssh trust for sms
+  hosts: all_node
+  remote_user: root
+  gather_facts: no
+  vars_files:
+    - ./group_vars/ssh_trust_sms
+  tasks:
+    - import_role: name=ssh_mutual_trust

@@ -1,0 +1,10 @@
+---
+- name: install jdk
+  hosts: all_node_root
+  remote_user: root
+  gather_facts: no
+  vars_files:
+    - ./group_vars/jdk
+  tasks:
+    - name: install jdk
+      import_role: name=jdk

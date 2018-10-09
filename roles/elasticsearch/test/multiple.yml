@@ -1,0 +1,23 @@
+---
+# Test ability to deploy single instances to a machine
+- name: install component
+  hosts: allhosts
+  remote_user: sms
+  gather_facts: yes
+  roles:
+  - elasticsearch
+  vars:
+    es_instance_name: "node1"
+    es_config:
+      node.name: "node1"
+      cluster.name: "custom-cluster"
+      discovery.zen.ping.unicast.hosts: "localhost:9301"
+      http.port: 9201
+      transport.tcp.port: 9301
+      node.data: false
+      node.master: true
+      bootstrap.memory_lock: true
+    es_scripts: false
+    es_templates: false
+    es_version_lock: false
+    es_heap_size: 256m

@@ -1,0 +1,8 @@
+
+- name: install jdk
+  import_tasks: install.yml
+  when: jdk_operation=="install"
+
+- name: uninstall jdk
+  import_tasks: uninstall.yml
+  when: jdk_operation=="uninstall"

@@ -1,0 +1,46 @@
+---
+
+- name: generate node01-m
+  hosts: master_node
+  remote_user: sms
+  roles:
+    - role: elasticsearch
+  vars:
+    es_instance_name: "node01-m"
+    es_data_dirs:
+      - "/data/0/sms/elasticsearch"
+    es_heap_size: "256m"
+    es_config:
+      cluster.name: "test-cluster"
+      discovery.zen.ping.unicast.hosts: ["192.168.137.101:9310","192.168.137.101:9311"]
+      http.port: 9200
+      transport.tcp.port: 9310
+      node.data: false
+      node.master: true
+      bootstrap.memory_lock: false
+    es_scripts: false
+    es_templates: false
+    es_version_lock: false
+
+- name: generate node02-d
+  hosts: master_node
+  remote_user: sms
+  roles:
+    - role: elasticsearch
+  vars:
+    es_instance_name: "node02-d"
+    es_data_dirs:
+      - "/data/0/sms/elasticsearch"
+    es_heap_size: "256m"
+    es_config:
+      discovery.zen.ping.unicast.hosts: ["192.168.137.101:9310","192.168.137.101:9311"]
+      http.port: 9201
+      transport.tcp.port: 9311
+      node.data: true
+      node.master: false
+      bootstrap.memory_lock: false
+      cluster.name: "test-cluster"
+    es_scripts: false
+    es_templates: false
+    es_version_lock: false
+    es_api_port: 9201

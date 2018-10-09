@@ -1,0 +1,9 @@
+---
+
+ssh_mutual_trust_user: sms
+ssh_mutual_trust_hostlist:
+  - 192.168.137.101
+  - 192.168.137.102
+  - 192.168.137.103
+
+root_pass: '030479'

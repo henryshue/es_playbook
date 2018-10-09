@@ -1,0 +1,6 @@
+---
+# default file for user
+user_operation: "create"
+user_uid: ""
+user_groupname: ""
+user_gid: ""

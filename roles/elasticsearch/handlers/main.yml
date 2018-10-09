@@ -1,0 +1,20 @@
+---
+# handles file for elasticsearch
+
+- name: reload systemctl daemon
+  command: systemctl daemon-reload
+
+- name: abcdefg
+# service: name={{es_instance_name}}_{{sysd_script | basename}} state=restarted
+  shell: systemctl restart {{es_instance_name}}_{{sysd_script | basename}}
+
+- name: aaa bbb
+  shell: systemctl restart {{es_instance_name}}_{{sysd_script | basename}}
+
+- name: start elasticsearch
+  #service: name={{instance_init_script | basename}} state=started
+  shell: systemctl start {{es_instance_name}}_{{sysd_script | basename}}
+
+- name: stop elasticsearch
+  #service: name={{instance_init_script | basename}} state=stop
+  shell: systemctl stop {{es_instance_name}}_{{sysd_script | basename}}

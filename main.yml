@@ -1,0 +1,2 @@
+#!/usr/bin/ansible-playbook
+- import_playbook: install_{{app}}.yml

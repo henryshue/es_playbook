@@ -1,0 +1,19 @@
+---
+# remove jdk
+- name: check if jdk_uninstalpath_exists
+  shell: test -d {{jdk_uninstallpath}} && echo "yes" || echo "no"
+  register: uninstalljdkpath
+
+- name: remove jdk install dir
+  file: path={{jdk_uninstallpath}} state=absent
+  when: uninstalljdkpath.stdout=="yes"
+
+- name: unsetup env variable for jdk
+  lineinfile: dest=/etc/profile regexp="^export JAVA_HOME={{jdk_uninstallpath}}" state=absent
+  when: uninstalljdkpath.stdout=="yes"
+- lineinfile: dest=/etc/profile regexp="^export PATH=\$JAVA_HOME/bin;\$PATH" state=absent
+  when: uninstalljdkpath.stdout=="yes"
+
+- name: make unsetup work
+  shell: source /etc/profile
+  when: uninstalljdkpath.stdout=="yes"

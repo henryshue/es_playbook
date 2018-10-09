@@ -1,0 +1,26 @@
+---
+
+- name: check mutual trust user is defined or not
+  fail: msg="[ERROR] ssh_mutual_trust_user is not defined"
+  when: ssh_mutual_trust_user is not defined
+
+- name: check if ssh_mutual_trust_hostlist is defined or not
+  fail: msg="[ERROR] ssh_mutual_trust_hostlist is not defined"
+  when: ssh_mutual_trust_hostlist is not defined
+
+- name: create authorized keys
+  file: path=/tmp/authorized_keys state=touch mode=0777
+
+- name: emptied authorized key
+  shell: cat /dev/null > /tmp/authorzied_keys
+
+- name: copy public key content to local
+  shell: sshpass -p {{root_pass}} ssh {{item}} -o StrictHostKeyChecking=no cat /home/{{ssh_mutual_trust_user}}/.ssh/id_rsa.pub >> /tmp/authorized_keys
+  with_items: "{{ssh_mutual_trust_hostlist}}"
+
+- name: send authorized_key to remote_nodes
+  shell: sshpass -p {{root_pass}} scp -o StrictHostKeyChecking=no /tmp/authorized_keys {{item}}:/home/{{ssh_mutual_trust_user}}/.ssh/
+  with_items: "{{ssh_mutual_trust_hostlist}}"
+
+- name: delete /tmp/authorized_keys
+  file: path=/tmp/authorized_keys state=absent

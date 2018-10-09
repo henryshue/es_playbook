@@ -1,0 +1,8 @@
+# jdk install params
+
+jdk_operation: install
+jdk_version: jdk1.8.0_121
+jdk_pkgpath: ./package/jdk-8u121-linux-x64.tar.gz
+jdk_installpath: /usr/jdk/jdk1.8.0_121
+jdk_home: '{{jdk_installpath}}'
+jdk_link_file: /usr/jdk/java

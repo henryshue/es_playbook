@@ -1,0 +1,14 @@
+---
+
+# create group id
+- name: create group
+  group: name={{user_name}} gid={{user_gid}}
+
+# create user with groupname and uid
+- name: create user with groupname and uid
+  user: name={{user_name}} uid={{user_uid}} group={{user_groupname}} password={{user_password | password_hash('sha512')}} generate_ssh_key=yes update_password=always
+
+# setup no knownhost ask
+- name: set no knownhost ask
+  copy: src=config dest=/home/{{user_name}}/.ssh/config
+- file: path=/home/{{user_name}} state=directory owner={{user_name}} group={{user_groupname}} recurse=true

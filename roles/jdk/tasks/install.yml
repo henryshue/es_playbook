@@ -1,0 +1,33 @@
+---
+
+- name: uninstall openjdk
+  import_tasks: uninstall_openjdk.yml
+
+- name: if jdk_installpath exists
+  shell: test -d {{jdk_installpath}} && echo "yes" || echo "no"
+  register: jdk_exists
+
+- name: create jdk directory if jdk_installpath not exists
+  file: path={{jdk_installpath}} state=directory
+  when: jdk_exists.stdout=="no"
+
+- name: upload jdk and uncompress
+  unarchive: src={{jdk_pkgpath}} dest={{jdk_installpath}}
+  when: jdk_exists.stdout=="no"
+
+- name: set jdk directory owner and right
+  file: dest={{jdk_installpath}} state=directory owner=root group=root recurse=yes
+
+- name: set jdk execute right
+  shell: chmod a+x {{jdk_installpath}}/bin/java
+
+# Environment setup.
+- name: Set JAVA_HOME if configured.
+  template:
+    src: java_home.sh.j2
+    dest: /etc/profile.d/java_home.sh
+    mode: 0644
+  when: java_home is defined and java_home != ''
+
+- name: set environment enable
+  shell: "source /etc/profile.d/java_home.sh"

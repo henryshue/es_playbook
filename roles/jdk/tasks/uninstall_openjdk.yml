@@ -1,0 +1,8 @@
+---
+- name: check if jdk is installed
+  shell: (rpm -qa |grep "^java" && echo "yes" || echo "no") |grep -v java |tail -1
+  register: check_jdk_result
+
+- name: uninstall openjdk
+  shell: for javapkg in $(rpm -qa |grep java); do rpm -e --nodeps $javapkg; done
+  when: check_jdk_result.stdout=="yes"

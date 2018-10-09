@@ -1,0 +1,6 @@
+---
+- hosts: allhosts
+  connection: local
+  remote_user: sms
+  roles:
+    - role: elasticsearch 
