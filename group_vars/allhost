@@ -36,7 +36,7 @@ opt="backup"
 
 [all_node_root:vars]
 ansible_ssh_user="root"
-ansible_ssh_pass="030479"
+ansible_ssh_pass="root"
 user_name="sms"
 user_uid=1315
 user_password="sms"
@@ -53,7 +53,7 @@ ansible_ssh_gid=1316
 
 [master_node_root:vars]
 ansible_ssh_user="root"
-ansible_ssh_pass="030479"
+ansible_ssh_pass="root"
 
 [slave_node1:vars]
 ansible_ssh_user="sms"
@@ -64,7 +64,7 @@ ansible_ssh_gid=1316
 
 [slave_node1_root:vars]
 ansible_ssh_user="root"
-ansible_ssh_pass="030479"
+ansible_ssh_pass="root"
 
 [slave_node2:vars]
 ansible_ssh_user="sms"
@@ -75,4 +75,4 @@ ansible_ssh_gid=1316
 
 [slave_node2_root:vars]
 ansible_ssh_user="root"
-ansible_ssh_pass="030479"
+ansible_ssh_pass="root"
