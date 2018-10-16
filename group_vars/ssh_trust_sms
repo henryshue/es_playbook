@@ -6,4 +6,4 @@ ssh_mutual_trust_hostlist:
   - 192.168.137.102
   - 192.168.137.103
 
-root_pass: '030479'
+root_pass: 'root'
